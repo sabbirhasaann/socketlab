@@ -1,0 +1,21 @@
+{
+    "python.defaultInterpreterPath": ".venv/bin/python.exe",
+    "terminal.integrated.env.windows": {
+        "VIRTUAL_ENV": "${workspaceFolder}\\.venv",
+        "PATH": "${workspaceFolder}\\.venv\\Scripts;${env:PATH}"
+    },
+    "terminal.integrated.env.linux": {
+        "VIRTUAL_ENV": "${workspaceFolder}/.venv",
+        "PATH": "${workspaceFolder}/.venv/bin:${env:PATH}"
+    },
+    "python.terminal.activateEnvironment": true,
+    // This setting tells Visual Studio Code to use Pylance as the engine for its Python-related features
+    "python.languageServer": "Pylance",
+    /* 
+    A language server is a background process that provides "intelligence" for your code.
+    IntelliSense
+    Type Checking
+    Auto-Imports
+    Navigation&Refactoring
+    */
+}

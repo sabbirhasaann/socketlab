@@ -1,0 +1,13 @@
+Django
+python_dotenv
+drf_spectacular
+django_restframework
+python-magic
+django-cors-headers
+opencv-python
+numpy
+mediapipe
+websockets
+daphne 
+channels 
+channels-redis

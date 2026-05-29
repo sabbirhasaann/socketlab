@@ -1,0 +1,1 @@
+adb -s device_name(192.168.0.101:36679) reverse tcp:8000 tcp:8000
