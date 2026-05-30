@@ -6,6 +6,9 @@ class MySyncConsumer(SyncConsumer):
 
     def websocket_connect(self, event):
         print("WebSocket Connect...", event)
+        self.send({
+            'type': 'websocket.accept'
+        })
 
     def websocket_receive(self, event):
         print("WebSocket Received...", event)
