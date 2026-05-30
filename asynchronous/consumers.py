@@ -6,6 +6,9 @@ class MyAsyncConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
         print("WebSocket Connect...", event)
+        await self.send({
+            'type': 'websocket.accept'
+        })
 
     async def websocket_receive(self, event):
         print("WebSocket Received...", event)
