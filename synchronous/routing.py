@@ -1,6 +1,5 @@
 from django.urls import path
-from .consumers import MyAsyncConsumer, MySyncConsumer
+from .consumers import MySyncConsumer
 websocket_urlpatterns = [
     path('ws/sc/', MySyncConsumer.as_asgi(), name='sync-consumer'),
-    path('ws/ac/', MyAsyncConsumer.as_asgi(), name='async-consumer')
 ]
