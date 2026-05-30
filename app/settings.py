@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
 NEW_APPS = [
     'synchronous',
+    'asynchronous',
 ]
 
 INSTALLED_APPS += NEW_APPS
