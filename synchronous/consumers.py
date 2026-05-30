@@ -1,4 +1,5 @@
 from channels.consumer import SyncConsumer
+from channels.exceptions import StopConsumer
 
 
 class MySyncConsumer(SyncConsumer):
@@ -16,3 +17,4 @@ class MySyncConsumer(SyncConsumer):
 
     def websocket_disconnect(self, event):
         print("WebSocket Disconnect...", event)
+        raise StopConsumer()
