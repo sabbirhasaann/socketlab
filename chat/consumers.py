@@ -20,4 +20,4 @@ class MySyncConsumer(SyncConsumer):
 
     def websocket_disconnect(self, event):
         print('Websocket disconnected...')
-        StopConsumer()
+        raise StopConsumer()
