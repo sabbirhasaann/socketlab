@@ -1,5 +1,6 @@
 from channels.consumer import SyncConsumer
 from channels.exceptions import StopConsumer
+from time import sleep
 
 
 class MySyncConsumer(SyncConsumer):
@@ -14,10 +15,12 @@ class MySyncConsumer(SyncConsumer):
     def websocket_receive(self, event):
         print("WebSocket Received...", event)
         print("Message is ", event['text'])
-        self.send({
-            'type': 'websocket.send',
-            'text': 'Message from sync server'
-        })
+        for i in range(50):
+            self.send({
+                'type': 'websocket.send',
+                'text': str(i)
+            })
+            sleep(1)
 
     def websocket_disconnect(self, event):
         print("WebSocket Disconnect...", event)
