@@ -9,6 +9,22 @@
 
 <body>
 
+    <script>
+        var baseUrl = 'ws://127.0.0.1:8000/ws/';
+        var ws = new WebSocket(`${baseUrl}sc1/`);
+
+        ws.onopen = function () {
+            console.log("Websocket connection is open...");
+        }
+
+        ws.onmessage = function (event) {
+            console.log('Message received from server', event);
+        }
+
+        ws.oncloese = function (event) {
+            console.error('Websocket connection is closed...');
+        }
+    </script>
 </body>
 
 </html>
