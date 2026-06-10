@@ -14,6 +14,10 @@ class MySyncConsumer(SyncConsumer):
     def websocket_receive(self, event):
         print("WebSocket Received...", event)
         print("Message is ", event['text'])
+        self.send({
+            'type': 'websocket.send',
+            'text': 'Message from sync server'
+        })
 
     def websocket_disconnect(self, event):
         print("WebSocket Disconnect...", event)
