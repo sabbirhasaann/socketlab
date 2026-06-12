@@ -14,7 +14,8 @@
     <input type="button" value="Send" id="chat-message-submit">
     <script>
         var baseUrl = 'ws://127.0.0.1:8000/ws/';
-        var ws = new WebSocket(`${baseUrl}sc1/`);
+        // var ws = new WebSocket(`${baseUrl}sc1/`);
+        var ws = new WebSocket(`${baseUrl}ac1/`);
 
         ws.onopen = function () {
             console.log("Websocket connection is open...");
