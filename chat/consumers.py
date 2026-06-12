@@ -46,3 +46,39 @@ class MySyncConsumer(SyncConsumer):
             'Programmers', self.channel_name,
         )
         raise StopConsumer()
+
+
+class MyAsyncConsumer(AsyncConsumer):
+    """My async consumer"""
+
+    async def websocket_connect(self, event):
+        print("Websocket connecting...")
+        print("Default channel layer: ", self.channel_layer)
+        print("Channel name: ", self.channel_name)
+        await self.channel_layer.group_add('Coders', self.channel_name)
+        await self.send({
+            'type': 'websocket.accept',
+        })
+        print('Websocket connected!')
+
+    async def websocket_receive(self, event):
+        print("Received message", event['text'])
+
+        await self.channel_layer.group_send('Coders', {
+            'type': 'chat.message',
+            'message': event['text']
+        })
+
+    async def chat_message(self, event):
+        print("Chat message: ", event['message'])
+        await self.send({
+            'type': 'websocket.send',
+            'text': event['message']
+        })
+
+    async def websocket_disconnect(self, event):
+        print('Websocket disconnecting...')
+        print("Websocket channel layer: ", self.channel_layer)
+        print("Websocket channel name: ", self.channel_name)
+        await self.channel_layer.group_discard('Coders', self.channel_name)
+        raise StopConsumer()
