@@ -55,7 +55,10 @@ class MyAsyncConsumer(AsyncConsumer):
         print("Websocket connecting...")
         print("Default channel layer: ", self.channel_layer)
         print("Channel name: ", self.channel_name)
-        await self.channel_layer.group_add('Coders', self.channel_name)
+        # print("Print self.scope....", self.scope)
+        self.group_name = self.scope['url_route']['kwargs']['group_name']
+        print("group name..", self.scope['url_route']['kwargs']['group_name'])
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.send({
             'type': 'websocket.accept',
         })
@@ -64,7 +67,7 @@ class MyAsyncConsumer(AsyncConsumer):
     async def websocket_receive(self, event):
         print("Received message", event['text'])
 
-        await self.channel_layer.group_send('Coders', {
+        await self.channel_layer.group_send(self.group_name, {
             'type': 'chat.message',
             'message': event['text']
         })
@@ -80,5 +83,5 @@ class MyAsyncConsumer(AsyncConsumer):
         print('Websocket disconnecting...')
         print("Websocket channel layer: ", self.channel_layer)
         print("Websocket channel name: ", self.channel_name)
-        await self.channel_layer.group_discard('Coders', self.channel_name)
+        await self.channel_layer.group_discard(self.group_name, self.channel_name)
         raise StopConsumer()
