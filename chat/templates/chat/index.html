@@ -22,6 +22,8 @@
         console.log(typeof (groupName))
         // var ws = new WebSocket(`${baseUrl}sc1/`);
         var ws = new WebSocket(`${baseUrl}ac1/${groupName}/`);
+        var ws = new WebSocket(`${baseUrl}sc1/${groupName}/`);
+
 
         ws.onopen = function () {
             console.log("Websocket connection is open...");
