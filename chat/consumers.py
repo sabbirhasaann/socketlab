@@ -11,9 +11,12 @@ class MySyncConsumer(SyncConsumer):
         print("Channel Layer", self.channel_layer)
         print("Channel name", self.channel_name)
 
+        self.group_name = self.scope['url_route']['kwargs']['group_name']
+        print("Group name ...", self.group_name)
+
         # add a channe to a new or existing groups
         async_to_sync(self.channel_layer.group_add)(
-            'Programmers', self.channel_name,
+            self.group_name, self.channel_name,
         )
 
         self.send({
@@ -24,7 +27,7 @@ class MySyncConsumer(SyncConsumer):
         print("Message received", event['text'])
         print("Type of received Message", type(event['text']))
 
-        async_to_sync(self.channel_layer.group_send)('Programmers', {
+        async_to_sync(self.channel_layer.group_send)(self.group_name, {
             'type': 'chat.message',
             'message': event['text']
         })
