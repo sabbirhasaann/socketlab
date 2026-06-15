@@ -8,14 +8,20 @@
 </head>
 
 <body>
-
+    <h3>Group name is {{group_name}}</h3><br>
+    {{group_name | json_script:"group-name"}}
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input type="text" id="chat-message-input" size="100"><br>
     <input type="button" value="Send" id="chat-message-submit">
+
+
     <script>
         var baseUrl = 'ws://127.0.0.1:8000/ws/';
+        var groupName = JSON.parse(document.getElementById('group-name').textContent);
+        console.log(groupName);
+        console.log(typeof (groupName))
         // var ws = new WebSocket(`${baseUrl}sc1/`);
-        var ws = new WebSocket(`${baseUrl}ac1/`);
+        var ws = new WebSocket(`${baseUrl}ac1/${groupName}/`);
 
         ws.onopen = function () {
             console.log("Websocket connection is open...");
@@ -37,7 +43,9 @@
 
         document.getElementById('chat-message-submit').onclick = function (event) {
             const messageInputDom = document.getElementById('chat-message-input')
+            console.log(messageInputDom)
             const message = messageInputDom.value
+            console.log("Sending messing...", message)
             ws.send(JSON.stringify(
                 {
                     'msg': message
