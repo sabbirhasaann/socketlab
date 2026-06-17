@@ -10,7 +10,11 @@
 <body>
     <h3>Group name is {{group_name}}</h3><br>
     {{group_name | json_script:"group-name"}}
-    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+    <textarea id="chat-log" cols="100" rows="20">
+        {% for chat in chats%}
+            {{chat.content}}
+        {% endfor %}
+    </textarea><br>
     <input type="text" id="chat-message-input" size="100"><br>
     <input type="button" value="Send" id="chat-message-submit">
 
