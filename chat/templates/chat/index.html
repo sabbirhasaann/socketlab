@@ -9,6 +9,7 @@
 
 <body>
     <h3>Group name is {{group_name}}</h3><br>
+    <h2 id="username"></h2>
     {{group_name | json_script:"group-name"}}
     <textarea id="chat-log" cols="100" rows="20">
         {% for chat in chats%}
@@ -38,9 +39,11 @@
             console.log('Message received from server', event);
             console.log('Type of message receieved from server', typeof (event))
             var data = JSON.parse(event['data'])
+            console.log(data);
             var message = data.msg
             console.log('Actual message:', message)
             document.querySelector('#chat-log').append(message + '\n')
+            document.querySelector('#username').append("Username:" + data.username)
         }
 
         ws.oncloese = function (event) {
