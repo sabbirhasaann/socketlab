@@ -9,7 +9,7 @@ class Chat(models.Model):
     group = models.ForeignKey('Group', on_delete=models.CASCADE)
 
     def __str__(self):
-        self.content
+        return self.content
 
 
 class Group(models.Model):
