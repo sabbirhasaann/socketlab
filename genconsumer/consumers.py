@@ -9,6 +9,7 @@ class MyWebsocketConsumer(WebsocketConsumer):
         print("Websocket connected..")
         self.accept()
         # self.close()
+        self.send(text_data="Message from server")
 
     def receive(self, text_data=None, bytes_data=None):
         print("Message received from client...", text_data)
