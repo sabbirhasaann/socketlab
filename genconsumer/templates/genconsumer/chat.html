@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{channel|capfirst}}</title>
+</head>
+
+<body>
+    <h1>Welcome to {{channel|capfirst}}'s Channel</h1>
+    <textarea name="" id="chat-messages" cols="100" rows="20"></textarea><br> <br>
+    <input type="text" name="" id="chat-message" size="100"><br> <br>
+    <input type="button" value="send-message">
+
+    <script>
+        const chatMessagesField = document.getElementById('chat-messages');
+        const chatMessageField = document.getElementById('chat-message');
+        const sendMessageButton = document.getElementById('send-message');
+
+        const chatSocket = new WebSocket("ws:127.0.0.1:8000/ws/wsc/chat/");
+
+        chatSocket.onopen = function () {
+            chatSocket.send("Hi from client!");
+        }
+
+        chatSocket.onmessage = function (event) {
+            console.log(event);
+            console.log(event.data);
+            console.log(typeof (event.data));
+        }
+    </script>
+
+</body>
+
+</html>

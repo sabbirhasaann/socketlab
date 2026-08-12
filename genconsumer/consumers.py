@@ -39,3 +39,17 @@ class MyAsyncWebsocketConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, close_code):
         print("Websocket disconnected...", close_code)
+
+
+class ChatWebsocketConsumer(WebsocketConsumer):
+    def connect(self):
+        self.accept()
+
+    def receive(self, text_data=None, bytes_data=None):
+        print("....Received ", text_data)
+        self.send(
+            text_data="Server received you message!"
+        )
+
+    def disconnect(self, code):
+        print("disconnected...")
