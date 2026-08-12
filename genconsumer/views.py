@@ -19,6 +19,8 @@ def chatHome(request):
 
 
 def chat(request, channel):
-    return render(request, "genconsumer/chat.html", {
-        "channel": channel,
-    })
+    if channels.count(channel) == 1:
+        return render(request, "genconsumer/chat.html", {
+            "channel": channel,
+        })
+    return render(request, "genconsumer/404.html")
