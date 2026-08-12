@@ -23,7 +23,9 @@
         console.log(channelName);
         console.log(typeof (channelName));
 
-        const chatSocket = new WebSocket(`ws://127.0.0.1:8000/ws/wsc/chat/${channelName}/`);
+        // const chatSocket = new WebSocket(`ws://127.0.0.1:8000/ws/wsc/chat/${channelName}/`);
+        const chatSocket = new WebSocket(`ws://127.0.0.1:8000/ws/awsc/chat/${channelName}/`);
+
 
 
         chatSocket.onopen = function () {
