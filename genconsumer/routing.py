@@ -4,5 +4,6 @@ from .consumers import MyWebsocketConsumer, MyAsyncWebsocketConsumer, ChatWebsoc
 websocket_urlpatters = [
     path('ws/wsc/', MyWebsocketConsumer.as_asgi()),
     path('ws/awsc/', MyAsyncWebsocketConsumer.as_asgi()),
-    path('ws/wsc/chat/', ChatWebsocketConsumer.as_asgi(), name='chat-websocket')
+    path('ws/wsc/chat/<str:channel>/',
+         ChatWebsocketConsumer.as_asgi(), name='chat-websocket')
 ]

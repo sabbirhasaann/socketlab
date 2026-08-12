@@ -1,6 +1,8 @@
 from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 from time import sleep
 from asyncio import sleep as asysleep
+from asgiref.sync import async_to_sync
+import json
 
 
 class MyWebsocketConsumer(WebsocketConsumer):
@@ -43,13 +45,32 @@ class MyAsyncWebsocketConsumer(AsyncWebsocketConsumer):
 
 class ChatWebsocketConsumer(WebsocketConsumer):
     def connect(self):
+        print("Channel layer...", self.channel_layer)
+        print("Channel name...", self.channel_name)
+
+        self.group_name = self.scope["url_route"]["kwargs"]["channel"]
+        async_to_sync(self.channel_layer.group_add)(self.group_name,
+                                                    self.channel_name)
+
         self.accept()
 
     def receive(self, text_data=None, bytes_data=None):
         print("....Received ", text_data)
-        self.send(
-            text_data="Server received you message!"
-        )
+
+        data = json.loads(text_data)
+        message = data['msg']
+        print("Message...", message)
+
+        async_to_sync(self.channel_layer.group_send)(self.group_name, {
+            'type': 'chat.message',
+            "message": message,
+        })
+
+    def chat_message(self, event):
+        print("Event...", event)
+        self.send(text_data=json.dumps({
+            'msg': event['message'],
+        }))
 
     def disconnect(self, code):
         print("disconnected...")

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 channels = [
-    "banglades",
+    "bangladesh",
     "india",
     "nepal",
     "america",
