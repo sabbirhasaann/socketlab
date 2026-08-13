@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+</head>
+
+<body>
+    <h3>Group name is {{group_name}}</h3><br>
+    <h2 id="username"></h2>
+    {{group_name | json_script:"group-name"}}
+    <textarea id="chat-log" cols="100" rows="20">
+        {% for chat in chats%}
+            {{chat.content}}
+        {% endfor %}
+    </textarea><br>
+    <input type="text" id="chat-message-input" size="100"><br>
+    <input type="button" value="Send" id="chat-message-submit">
+
+
+    <script>
+        var baseUrl = 'ws://127.0.0.1:8000/ws/';
+        var groupName = JSON.parse(document.getElementById('group-name').textContent);
+        console.log(groupName);
+        console.log(typeof (groupName))
+        // var ws = new WebSocket(`${baseUrl}sc1/`);
+        var ws = new WebSocket(`${baseUrl}ac1/${groupName}/`);
+        var ws = new WebSocket(`${baseUrl}sc1/${groupName}/`);
+
+
+        ws.onopen = function () {
+            console.log("Websocket connection is open...");
+            // ws.send('Hello, form client')
+        }
+
+        ws.onmessage = function (event) {
+            console.log('Message received from server', event);
+            console.log('Type of message receieved from server', typeof (event))
+            var data = JSON.parse(event['data'])
+            console.log(data);
+            var message = data.msg
+            console.log('Actual message:', message)
+            document.querySelector('#chat-log').append(message + '\n')
+            document.querySelector('#username').append("Username:" + data.username)
+        }
+
+        ws.oncloese = function (event) {
+            console.error('Websocket connection is closed...');
+        }
+
+        document.getElementById('chat-message-submit').onclick = function (event) {
+            const messageInputDom = document.getElementById('chat-message-input')
+            console.log(messageInputDom)
+            const message = messageInputDom.value
+            console.log("Sending messing...", message)
+            ws.send(JSON.stringify(
+                {
+                    'msg': message
+                }
+            ))
+            messageInputDom.value = ''
+        }
+    </script>
+</body>
+
+</html>

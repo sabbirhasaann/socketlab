@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real time data transmission with generic consumer</title>
+</head>
+
+<body>
+    <h1>Nothing is here for show</h1>
+    <p id="data"></p>   
+</body>
+
+
+<script>
+    var baseUrl = 'ws://127.0.0.1:8000/ws';
+
+    var ws = new WebSocket(`${baseUrl}/wsc/`);
+
+    ws.onopen = function () {
+        console.log('Websocket connection is open...');
+        ws.send("Message from client...");
+    }
+
+    ws.onmessage = function (event) {
+        console.log(event);
+        const dataDoc = document.querySelector('#data');
+        dataDoc.textContent = event.data;
+    }
+</script>
+
+</html>
