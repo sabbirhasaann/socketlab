@@ -33,7 +33,6 @@ def chat(request, channel):
             print("Group not exists...")
             group = GenGroup(group=channel)
             group.save()
-        # print("Group object...", group)
 
         return render(request, "genconsumer/chat.html", {
             "channel": channel,

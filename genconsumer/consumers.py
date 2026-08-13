@@ -128,7 +128,7 @@ class ChatAsyncJsonWebsocketConsumer(AsyncJsonWebsocketConsumer):
         await self.channel_layer.group_add(self.group_name, self.channel_name)
         await self.accept()
 
-    async def receive_json(self, content, *kwargs):
+    async def receive_json(self, content, **kwargs):
         print("content...", content)
         print("Type ....", type(content))
 
