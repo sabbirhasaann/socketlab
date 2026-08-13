@@ -6,6 +6,9 @@ class GenGroup(models.Model):
     createdAt = models.DateTimeField(auto_now=True)
     updatedAt = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return self.group
+
 
 class GenChat(models.Model):
     content = models.CharField(max_length=1000)
@@ -13,3 +16,6 @@ class GenChat(models.Model):
 
     createdAt = models.DateTimeField(auto_now=True)
     updatedAt = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.content

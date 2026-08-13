@@ -2,7 +2,9 @@ from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
 from time import sleep
 from asyncio import sleep as asysleep
 from asgiref.sync import async_to_sync
+from channels.db import database_sync_to_async
 import json
+from .models import GenGroup, GenChat
 
 
 class MyWebsocketConsumer(WebsocketConsumer):
@@ -88,16 +90,24 @@ class ChatAsyncWebsocketConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def receive(self, text_data=None, bytes_data=None):
-        print("....Received ", text_data)
 
         data = json.loads(text_data)
-        message = data['msg']
-        print("Message...", message)
+        self.message = data['msg']
+        if self.scope['user'].is_authenticated:
+            group = await database_sync_to_async(GenGroup.objects.get)(group=self.group_name)
+            chat = GenChat(content=self.message, group=group)
+            await database_sync_to_async(chat.save)()
 
-        await self.channel_layer.group_send(self.group_name, {
-            'type': 'chat.message',
-            "message": message,
-        })
+            await self.channel_layer.group_send(self.group_name, {
+                'type': 'chat.message',
+                "message": self.message,
+            })
+        else:
+            await self.send(
+                text_data=json.dumps({
+                    'msg': "Login required"
+                })
+            )
 
     async def chat_message(self, event):
         print("Event...", event)

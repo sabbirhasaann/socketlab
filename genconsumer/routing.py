@@ -1,5 +1,5 @@
 from django.urls import path
-from .consumers import MyWebsocketConsumer, MyAsyncWebsocketConsumer, ChatWebsocketConsumer
+from .consumers import MyWebsocketConsumer, MyAsyncWebsocketConsumer, ChatWebsocketConsumer, ChatAsyncWebsocketConsumer
 
 websocket_urlpatters = [
     path('ws/wsc/', MyWebsocketConsumer.as_asgi()),
@@ -7,5 +7,5 @@ websocket_urlpatters = [
     path('ws/wsc/chat/<str:channel>/',
          ChatWebsocketConsumer.as_asgi(), name='chat-swsc'),
     path('ws/awsc/chat/<str:channel>/',
-         ChatWebsocketConsumer.as_asgi(), name='chat-awsc'),
+         ChatAsyncWebsocketConsumer.as_asgi(), name='chat-awsc'),
 ]

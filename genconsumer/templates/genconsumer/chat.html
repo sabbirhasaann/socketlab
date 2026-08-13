@@ -9,7 +9,11 @@
 
 <body>
     <h1>Welcome to {{channel|capfirst}}'s Channel</h1>
-    <textarea name="" id="chat-messages" cols="100" rows="20"></textarea><br> <br>
+    <textarea name="" id="chat-messages" cols="100" rows="20">
+     {% for message in messages %}
+    {{message}}
+     {% endfor %}
+    </textarea><br> <br>
     <input type="text" name="" id="chat-message" size="100"><br> <br>
     <input type="button" value="Send Message" id="send-message">
 
