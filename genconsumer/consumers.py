@@ -1,4 +1,4 @@
-from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer, AsyncWebsocketConsumer, AsyncJsonWebsocketConsumer
 from time import sleep
 from asyncio import sleep as asysleep
 from asgiref.sync import async_to_sync
@@ -117,3 +117,45 @@ class ChatAsyncWebsocketConsumer(AsyncWebsocketConsumer):
 
     async def disconnect(self, code):
         print("disconnected...")
+
+
+class ChatAsyncJsonWebsocketConsumer(AsyncJsonWebsocketConsumer):
+
+    async def connect(self):
+        print("connected...")
+        self.group_name = self.scope['url_route']['kwargs']['channel']
+        print("Channel name...", self.group_name)
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        await self.accept()
+
+    async def receive_json(self, content, *kwargs):
+        print("content...", content)
+        print("Type ....", type(content))
+
+        if self.scope['user'].is_authenticated:
+            group = await database_sync_to_async(GenGroup.objects.get)(group=self.group_name)
+            chat = GenChat(content=content['msg'], group=group)
+            await database_sync_to_async(chat.save)()
+
+            await self.channel_layer.group_send(
+                self.group_name,
+                {
+                    'type': 'chat.message',
+                    'message': content['msg']
+                }
+            )
+        else:
+            await self.send_json(
+                {
+                    'msg': 'Login required'
+                }
+            )
+
+    async def chat_message(self, event):
+        print("event message...", event['message'])
+        await self.send_json({
+            'msg': event['message']
+        })
+
+    async def disconnect(self, code):
+        print("Disconnected...", code)
